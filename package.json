@@ -6,7 +6,8 @@
   "module": "es2022",
   "target": "es2022",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "start": "ts-node src/index.ts"
   },
   "repository": {
     "type": "git",

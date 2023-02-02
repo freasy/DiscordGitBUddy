@@ -21,7 +21,7 @@ class DownloadJobs {
 
         this._instance = new DownloadJobs(client);
 
-        schedule.scheduleJob('* */30 * * * *', () => {
+        schedule.scheduleJob('*/30 * * * *', () => {
             this._instance.run();
         }).invoke();
     }
