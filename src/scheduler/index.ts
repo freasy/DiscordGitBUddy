@@ -109,7 +109,12 @@ class DownloadJobs {
                             db.manager.save(repo);
                         }
 
-                        channel.setName(`${repo.name} ${releases[0].tag_name} (${readables(total, 1, false)})`);
+                        let version = releases[0].tag_name;
+                        if (!version.startsWith('v')) {
+                            version = `v${version}`;
+                        }
+
+                        channel.setName(`${repo.name} ${version} (${readables(total, 1, false)})`);
                     })
                 }
             });
