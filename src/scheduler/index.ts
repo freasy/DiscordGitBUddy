@@ -18,7 +18,7 @@ class DownloadJobs {
     }
 
     public static init(client: SapphireClient) {
-        console.log('Initializing job...');
+        console.log('Initializing jobs...');
 
         this._instance = new DownloadJobs(client);
 
@@ -109,7 +109,7 @@ class DownloadJobs {
                             db.manager.save(repo);
                         }
 
-                        channel.setName(`${repo.name} ${releases[0].tag_name} (${readables(total, 1, true)})`);
+                        channel.setName(`${repo.name} ${releases[0].tag_name} (${readables(total, 1, false)})`);
                     })
                 }
             });

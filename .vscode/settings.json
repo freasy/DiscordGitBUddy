@@ -5,6 +5,12 @@
             "driver": "SQLite",
             "name": "db",
             "database": "${workspaceFolder:GitBuddy}/database.sqlite"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "db2",
+            "database": "${workspaceFolder:GitBuddy}/database2.sqlite"
         }
     ]
 }

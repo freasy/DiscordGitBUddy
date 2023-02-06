@@ -24,7 +24,7 @@ let formats = ["", "K", "M", "B", "T", ...result];
  */
 function readables(n: number, decPlaces = 1, formatThousand = true) {
     let tmp: number | BigInt = n;
-    if (!formatThousand && n <= 999999) return n.toLocaleString("en");
+    if (!formatThousand && n <= 9999999) return n.toLocaleString("en").replace(/,/g, ".");
   
     if (tmp.toString().includes("e")) tmp = BigInt(n);
 
