@@ -1,6 +1,5 @@
 import { AxiosError } from './../../node_modules/axios/index.d';
 import { GithubRelease } from './../../types/github-release.type.d';
-import readable from 'readable-numbers';
 import axios from 'axios';
 import { SapphireClient } from '@sapphire/framework';
 import * as schedule from 'node-schedule';
@@ -8,6 +7,7 @@ import { GuildBasedChannel, VoiceChannel, ChannelType, PermissionFlagsBits } fro
 
 import db from '../database';
 import { Repository } from '../database/entities/repository.entity';
+import readables from '../human-readable';
 
 class DownloadJobs {
 
@@ -109,7 +109,7 @@ class DownloadJobs {
                             db.manager.save(repo);
                         }
 
-                        channel.setName(`${repo.name} ${releases[0].tag_name} (${readable(total, 1, true)})`);
+                        channel.setName(`${repo.name} ${releases[0].tag_name} (${readables(total, 1, true)})`);
                     })
                 }
             });
