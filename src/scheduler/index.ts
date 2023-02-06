@@ -1,5 +1,6 @@
+import { AxiosError } from './../../node_modules/axios/index.d';
 import { GithubRelease } from './../../types/github-release.type.d';
-import { Job } from 'node-schedule';
+import readable from 'readable-numbers';
 import axios from 'axios';
 import { SapphireClient } from '@sapphire/framework';
 import * as schedule from 'node-schedule';
@@ -52,8 +53,8 @@ class DownloadJobs {
                 `https://api.github.com/repos/${r[rIndex]}/${r[rIndex + 1]}/releases`,
             )
             .then(res => res.data)
-            .catch(err => {
-                console.error(err);
+            .catch((err: AxiosError) => {
+                console.error(url, err?.response?.data);
                 return null;
             });
     }
@@ -108,7 +109,7 @@ class DownloadJobs {
                             db.manager.save(repo);
                         }
 
-                        channel.setName(`${repo.name} ${releases[0].tag_name} (${total})`);
+                        channel.setName(`${repo.name} ${releases[0].tag_name} (${readable(total, 1, true)})`);
                     })
                 }
             });
