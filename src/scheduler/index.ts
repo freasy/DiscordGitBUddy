@@ -109,9 +109,9 @@ class DownloadJobs {
                             db.manager.save(repo);
                         }
 
-                        let version = releases[0].tag_name;
-                        if (!version.startsWith('v')) {
-                            version = `v${version}`;
+                        let version: string = releases[0].tag_name;
+                        if (version.startsWith('v')) {
+                            version = version.substring(1);
                         }
 
                         channel.setName(`${repo.name} ${version} (${readables(total, 1, false)})`);
