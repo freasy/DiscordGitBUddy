@@ -3,23 +3,23 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 @Entity()
 export class Repository {
     @PrimaryGeneratedColumn()
-    id: number
+    id!: number
 
     @Column({
         length: 100,
     })
-    name: string
+    name!: string
 
 
     @Column({
         length: 200,
     })
-    url: string
+    url!: string
 
     @Column({
         default: null
     })
-    guildId?: string
+    guildId?: string | null
 
     @Column({
         default: null
@@ -40,5 +40,5 @@ export class Repository {
         type: "integer",
         default: 0
     })
-    downloads: number
+    downloads!: number
 }

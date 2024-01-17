@@ -1,13 +1,13 @@
 import { Repository } from './../database/entities/repository.entity';
 import { ActionRowBuilder, ButtonBuilder, TextInputBuilder } from '@discordjs/builders';
-import { InteractionHandler, InteractionHandlerTypes, PieceContext } from '@sapphire/framework';
+import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
 import type { ButtonInteraction } from 'discord.js';
 import { ButtonStyle, TextInputStyle, EmbedBuilder, ModalBuilder, StringSelectMenuBuilder } from 'discord.js';
 
 import db from '../database';
 
 export class SetupButtonHandler extends InteractionHandler {
-  public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
+  public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
     super(ctx, {
       ...options,
       interactionHandlerType: InteractionHandlerTypes.Button
@@ -31,7 +31,7 @@ export class SetupButtonHandler extends InteractionHandler {
 
     const embeds = [];
 
-    let repositories: Repository[] = null;
+    let repositories: Repository[] | null = null;
 
     switch (interaction.customId) {
         case 'list-setup-button':

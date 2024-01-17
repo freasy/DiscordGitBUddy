@@ -12,5 +12,6 @@
             "name": "db2",
             "database": "${workspaceFolder:GitBuddy}/database2.sqlite"
         }
-    ]
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

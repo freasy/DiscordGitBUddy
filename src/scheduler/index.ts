@@ -14,13 +14,16 @@ class DownloadJobs {
     private static _instance: DownloadJobs;
 
     public static instance() {
+        if (!this._instance) {
+            throw new Error('DownloadJobs instance not set!');
+        }
         return this._instance;
     }
 
-    public static init(client: SapphireClient) {
+    public static init(client: SapphireClient, token?: string) {
         console.log('Initializing jobs...');
 
-        this._instance = new DownloadJobs(client);
+        this._instance = new DownloadJobs(client, token);
 
         schedule.scheduleJob('*/30 * * * *', () => {
             this._instance.run();
@@ -28,9 +31,11 @@ class DownloadJobs {
     }
 
     private client: SapphireClient;
+    private github_token?: string;
 
-    constructor(client: SapphireClient) {
+    constructor(client: SapphireClient, token?: string) {
         this.client = client;
+        this.github_token = token;
     }
 
     private getRelease(url: string) {
@@ -51,6 +56,11 @@ class DownloadJobs {
         return axios
             .get<GithubRelease[]>(
                 `https://api.github.com/repos/${r[rIndex]}/${r[rIndex + 1]}/releases`,
+                {
+                    headers: {
+                        Authorization: this.github_token ? `token ${this.github_token}` : null
+                    }
+                }
             )
             .then(res => res.data)
             .catch((err: AxiosError) => {
@@ -67,12 +77,12 @@ class DownloadJobs {
 
             repos.map(async repo => {
                 const releases = await this.getRelease(repo.url);
-                if (releases?.length > 0) {
+                if (releases && releases.length > 0) {
                     const total = releases[0].assets.reduce(
                         (sum, currentValue) => {
                             if (
                                 currentValue.name.endsWith('.img.xz') ||
-                                currentValue.name === 'mainsail.zip'
+                                currentValue.name.endsWith('.zip')
                             ) {
                                 return sum + currentValue.download_count;
                             }
@@ -83,13 +93,18 @@ class DownloadJobs {
                     );
 
                     return guild.fetch().then(async g => {
-                        let channel: GuildBasedChannel = null;
+                        let channel: GuildBasedChannel | null = null;
                         if (repo.channelId) {
                             channel = await g.channels.fetch(repo.channelId).catch(() => null);
                         }
+                        let version: string = releases[0].tag_name;
+                        if (version.startsWith('v')) {
+                            version = version.substring(1);
+                        }
+
                         if (!channel) {
                             channel = await g.channels.create<ChannelType.GuildVoice>({
-                                name: `${repo.name} ${releases[0].tag_name}`,
+                                name: `${repo.name} ${version}`,
                                 type: ChannelType.GuildVoice,
                                 position: 0,
                                 userLimit: 0,
@@ -106,15 +121,10 @@ class DownloadJobs {
 
                             repo.channelId = channel.id;
 
-                            db.manager.save(repo);
+                            await db.manager.save(repo);
                         }
 
-                        let version: string = releases[0].tag_name;
-                        if (version.startsWith('v')) {
-                            version = version.substring(1);
-                        }
-
-                        channel.setName(`${repo.name} ${version} (${readables(total, 1, false)})`);
+                        await channel.setName(`${repo.name} ${version} (${readables(total, 1, false)})`);
                     })
                 }
             });

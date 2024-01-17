@@ -1,11 +1,11 @@
-import { InteractionHandler, InteractionHandlerTypes, PieceContext } from '@sapphire/framework';
+import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
 import type { StringSelectMenuInteraction } from 'discord.js';
 
 import db from '../database';
 import { Repository } from '../database/entities/repository.entity';
 
 export class DelRepositoryModalHandler extends InteractionHandler {
-  public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
+  public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
     super(ctx, {
       ...options,
       interactionHandlerType: InteractionHandlerTypes.SelectMenu

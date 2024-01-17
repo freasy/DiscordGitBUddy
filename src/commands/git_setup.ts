@@ -5,7 +5,7 @@ import { ActionRowBuilder } from '@discordjs/builders';
 
 export class GitSetupCommand extends Command {
     
-    public constructor(context: Command.Context, options: Command.Options) {
+    public constructor(context: Command.LoaderContext, options: Command.Options) {
         
         super(context, {
             ...options,

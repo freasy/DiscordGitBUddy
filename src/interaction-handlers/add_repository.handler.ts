@@ -3,9 +3,10 @@ import type { ModalSubmitInteraction } from 'discord.js';
 
 import db from '../database';
 import { Repository } from '../database/entities/repository.entity';
+import DownloadJobs from '../scheduler';
 
 export class AddRepositoryModalHandler extends InteractionHandler {
-  public constructor(ctx: PieceContext, options: InteractionHandler.Options) {
+  public constructor(ctx: InteractionHandler.LoaderContext, options: InteractionHandler.Options) {
     super(ctx, {
       ...options,
       interactionHandlerType: InteractionHandlerTypes.ModalSubmit
@@ -43,5 +44,7 @@ export class AddRepositoryModalHandler extends InteractionHandler {
       content: 'Repository added!',
       ephemeral: true
     });
+
+    DownloadJobs.instance().run();
   }
 }

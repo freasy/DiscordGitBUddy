@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "fetches and displays git release download stats",
   "main": "src/index.js",
-  "module": "es2022",
-  "target": "es2022",
   "scripts": {
     "dev": "nodemon",
-    "start": "ts-node src/index.ts"
+    "start": "bunx ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -20,20 +18,22 @@
   },
   "homepage": "https://github.com/freasy/DiscordGitBUddy#readme",
   "dependencies": {
-    "@sapphire/framework": "^4.0.2",
-    "axios": "^1.3.1",
-    "discord.js": "^14.7.1",
+    "@sapphire/framework": "^5.0.6",
+    "axios": "^1.6.5",
+    "discord.js": "^14.14.1",
     "dotenv": "^16.0.3",
     "node-schedule": "^2.1.1",
     "readable-numbers": "^1.0.7",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.4",
-    "typeorm": "^0.3.11"
+    "typeorm": "^0.3.19"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
-    "@types/node-schedule": "^2.1.0",
+    "@types/node": "^20.11.5",
+    "@types/node-schedule": "^2.1.5",
     "nodemon": "^2.0.20",
-    "ts-node": "^10.9.1"
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.3.3"
   }
 }

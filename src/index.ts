@@ -1,8 +1,9 @@
+import 'reflect-metadata';
 import * as dotenv from 'dotenv' ;
 
 dotenv.config();
 
-import { SapphireClient } from '@sapphire/framework';
+import { SapphireClient, container } from '@sapphire/framework';
 import { GatewayIntentBits, OAuth2Scopes, PermissionFlagsBits } from 'discord.js';
 
 import db from './database';
@@ -15,9 +16,9 @@ const client = new SapphireClient({ intents: [GatewayIntentBits.Guilds, GatewayI
 async function run() {
     await client.login(process.env.TOKEN);
 
-    DownloadJobs.init(client)
+    DownloadJobs.init(client, process.env.GITHUB_TOKEN);
 
-    console.log(client.generateInvite({ scopes: [OAuth2Scopes.Bot], permissions: PermissionFlagsBits.Administrator }));
+    container.logger.info(client.generateInvite({ scopes: [OAuth2Scopes.Bot], permissions: PermissionFlagsBits.Administrator }));
 }
 
 run();
